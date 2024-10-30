@@ -107,11 +107,12 @@ class Source extends QfShop
             
              //记录站点更新日志
             $ip = $_SERVER['REMOTE_ADDR'];
-            $ips = Log::where(['ip'=>$ip])->find();
+            $Log = new Log();
+            $ips = $Log->where(['ip'=>$ip])->find();
             if(empty($ips)){
-                Log::save(['name' => '访问记录','ip'=>$ip]);
+                $Log->save(['name' => '访问记录','ip'=>$ip]);
             }else{
-                Log::where('id', $ips['id'])->update(['update_time' => time()]);
+                $Log->where('id', $ips['id'])->update(['update_time' => time()]);
             }
         }
         
