@@ -151,6 +151,8 @@ class QuarkPlugin
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_POST, true);
             curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($urlData));
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
     
             // 将句柄添加到 multiCurl 中
             curl_multi_add_handle($multiCurl, $ch);
