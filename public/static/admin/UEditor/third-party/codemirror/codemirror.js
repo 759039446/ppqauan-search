@@ -798,7 +798,7 @@ var CodeMirror = (function() {
             return {from: lineAtHeight(doc, from_height),
                 to: lineAtHeight(doc, to_height)};
         }
-        // Uses a set of changes plus the current scroll position to
+        // Uses a set of changes sourcePlus the current scroll position to
         // determine which DOM updates have to be made, and makes the
         // updates.
         function updateDisplay(changes, suppressCallback) {

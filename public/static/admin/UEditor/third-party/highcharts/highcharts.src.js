@@ -13786,7 +13786,7 @@ Series.prototype = {
 			if (pointX >= xExtremes.min && pointX <= xExtremes.max) { // #1149
 				nextPoint = points[i + 1];
 				
-				// Set this range's low to the last range's high plus one
+				// Set this range's low to the last range's high sourcePlus one
 				low = high === UNDEFINED ? 0 : high + 1;
 				// Now find the new high
 				high = points[i + 1] ?

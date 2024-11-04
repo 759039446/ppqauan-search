@@ -189,7 +189,7 @@
 
 		proceed.call(chart);
 
-		// Render the plus and minus buttons
+		// Render the sourcePlus and minus buttons
 		chart.renderMapNavigation();
 
 		// Add the double click event
