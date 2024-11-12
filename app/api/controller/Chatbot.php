@@ -9,7 +9,12 @@ use app\model\Source as SourceModel;
 
 class Chatbot extends QfShop
 {
-    // 应用管理 开放API 生成三个参数填在下方 回调地址：https://XXXX/api/chatbot 填在微信官方 即可
+    // 应用管理  回调地址：https://XXXX/api/chatbot 填在微信官方 即可
+    // 1、应用绑定-网页H5(获取配置)-开放API(申请权限、编辑填写回调地址保存)
+    // 2、开放API的三个参数填在下方
+    // 3、服务发布
+    // 以上三步完成 还不行  就是无缘
+    // 无法使用：ping chatbot.weixin.qq.com   延迟太高不行 或者 证书问题
     private $appId = '';
     private $token = '';
     private $encodingAESKey = '';
@@ -59,7 +64,7 @@ class Chatbot extends QfShop
             Cache::set($msg['userid'], 1, 604800);
         }
         // 检查用户消息内容中开头第一个字是否包含“搜”关键字
-        if (strncmp($message, '搜', 1) === 0 || strncmp($message, '全网搜', 1) === 0) {
+        if (strpos($message, '搜') === 0 || strpos($message, '全网搜') === 0) {
             
             if(strncmp($message, '全网搜', 1) === 0){
                 $list = [];
@@ -122,18 +127,10 @@ class Chatbot extends QfShop
     
     private function Qsearch($newString)
     {
-        $list = [];
-        $urlData = array(
-            'title' => $newString,
-        );
-        $res = curlHelper(Request::domain()."/api/other/all_search", "POST", $urlData)['body'];
-        $res = json_decode($res, true);
+        $bController = app(\app\api\controller\Other::class);
+        $result = $bController->all_search($newString);
         
-        if($res['code'] === 200){
-            $list = $res['data']??[];
-        }
-        
-        return $list;
+        return $result;
     }
 
     // 解密消息
