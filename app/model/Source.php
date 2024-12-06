@@ -68,6 +68,10 @@ class Source extends QfShop
         if(!is_null($result)){
             $result->inc('page_views')->update();
             $result['times'] = substr($result['time'], 0, 10);
+
+            $string = trim($result['title']);  // 去除前后空格
+            $string = str_replace("'", "", $string);  // 去除所有单引号
+            $result['title'] = $string;
         }
         unset($result['time']); 
         return $result;
@@ -134,8 +138,13 @@ class Source extends QfShop
         
         // 如果存在 title，则进行分词
         if (!empty($data['title'])) {
-            $search_type = isset($data['search_type']) ? (config('qfshop.search_type') ?? 1) : 1; //默认除网页端其它均为模糊搜索，想开启机器人分词搜索注释该行，取消注释下一行
-            // $search_type = config('qfshop.search_type') ?? 1;
+            if(isset($data['search_type'])){
+                //网页搜索时
+                $search_type = config('qfshop.search_type')??1;
+            }else{
+                //其它：比如机器人搜索时
+                $search_type = config('qfshop.search_type')==0?0:1;
+            }
             
             if($search_type == 0){
                 $map[] = ['title|description', 'like', '%' . trim($data['title']) . '%'];
@@ -210,6 +219,11 @@ class Source extends QfShop
                 $item['name'] = highlightKeywords($item['title'], $searchTitle);
                 $item['times'] = substr($item['time'], 0, 10);
                 unset($item['time']); 
+
+                $string = trim($item['title']);  // 去除前后空格
+                $string = str_replace("'", "", $string);  // 去除所有单引号
+                $item['title'] = $string;
+                
                 return $item;
             })
             ->toArray();
